@@ -1,0 +1,9 @@
+[vault]
+vault
+
+[backend]
+dbnode
+
+[frontend]
+appnode01
+#communote2
