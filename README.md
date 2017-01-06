@@ -1,6 +1,9 @@
 # ansible-communote
 
-This high level playbooks briefly described, and in the order they should be run in if you want to try this out.
+Ansible playbooks briefly described, and in the order they should be run in if you want to try this out.
+
+1. Build a HashiCorp Vault, auto init and unsealing.
+2. Build a MySQL instance, auto generating a root password and storing it in the vault.
 
 ## init_ansible_setup.yml
 
@@ -47,7 +50,7 @@ High-Availability Enabled: false
 
 ## build_db_instance.yml
 
-Builds the backend database instance with mysql.   Of note is that it initialises the database with a root passwords, and then stores that password in the HashiCorp Vault.   This means no human actually sets/sees the root password, but Ansible has access to it (as we see later) via the vault.
+Builds the backend database instance with mysql.   Of note is that it initialises the database with a root password, and then stores that password in the HashiCorp Vault.   This means no human actually sets/sees the root password, but Ansible has access to it (as we see later) via the vault.
 
 Checking the vault (in this demo env), we can see the password has been stored:
 ```
