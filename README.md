@@ -1,10 +1,13 @@
 # ansible-communote
 
-Ansible playbooks briefly described, and in the order they should be run in if you want to try this out.
+Ansible playbooks briefly described, and in the order they should be run in if you want to try this out.   The following four steps (wrapped into site.yml if preferred) produce a running Communote application.
 
 1. Build a HashiCorp Vault, auto init and unsealing.
 2. Build a MySQL instance, auto generating a root password and storing it in the vault.
-3. Install base data to communote database backend
+3. Install base data to communote database backend.
+4. Install the frontend Communote app, runnning on Tomcat.
+
+The impetus for this demo was to show Ansible and HashiCorp Vault combining to automate the installation process of a tiered Java application.  In addition, to show with Vault that we can auto-gen and deploy passwords without any human intervention.
 
 ## init_ansible_setup.yml
 
@@ -65,6 +68,23 @@ mysqlrootpw     	hFtzvVswuVoJDoBCllQ2
 Using the cnote-mysql-config role some base data is installed into the communote database.    This is the table and meta data setup required before we build the front end application nodes.
 
 
+## build_app_instance.yml
+Builds the Communote app server running on Tomcat, also creating a database user for this node.
+
+Communote needs to be started/stopped manually, though it will wrapped in a service.
+
+```
+[communote@appnode01 ~]$ cd /opt/communote/bin
+[communote@appnode01 bin]$ ./startup.sh 
+Using CATALINA_BASE:   /opt/communote
+Using CATALINA_HOME:   /opt/communote
+Using CATALINA_TMPDIR: /opt/communote/temp
+Using JRE_HOME:        /
+Using CLASSPATH:       /opt/communote/bin/bootstrap.jar:/opt/communote/bin/tomcat-juli.jar
+Tomcat started.
+```
+
+Login via http://appnode01:8080, though I can't remember the login credentials (loaded via the base data .sql install).
 
 ## Files not in this repo
 
