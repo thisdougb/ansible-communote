@@ -33,7 +33,7 @@ $(ansible-host) cat roles/.hashicorp_vault_keys.json
 
 $(ansible-host) mkdir -p group_vars/all
 $(ansible-host) ansible-vault create group_vars/all/hashicorp_token.yml
-root_token: "97a9e11e-49fc-1434-dafe-9be0eccce519"
+hashivault_root_token: "97a9e11e-49fc-1434-dafe-9be0eccce519"
 
 $(ansible-host) vagrant ssh vault
 Last login: Fri Jan  6 14:12:15 2017 from 172.28.128.4
