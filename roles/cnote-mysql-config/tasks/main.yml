@@ -1,0 +1,29 @@
+---
+# tasks file for cnote-mysql-config
+
+- name: read mysql password from vault
+  uri:
+    url: "http://{{ groups.vault[0] }}:8200/v1/secret/{{ inventory_hostname }}"
+    method: GET
+    HEADER_X-Vault-Token: "{{ hashivault_root_token }}"
+    get_content: yes
+    status_code: 200
+  register: vault_content
+  delegate_to: localhost
+
+# using root pw as a cli arg for demo purposes
+- name: create initial blank communote database
+  shell: "mysql -u root -p{{ vault_content.json.data.mysqlrootpw }} -e \"CREATE DATABASE IF NOT EXISTS {{ cnote_db_name }} CHARACTER SET utf8 COLLATE utf8_general_ci\""
+
+- name: copy initial communote data
+  copy:
+    src: initial_data.sql
+    dest: /tmp/
+
+- name: import initial data to mysql
+  shell: mysql -u root communote < /tmp/initial_data.sql
+
+- name: remove initial sql data file
+  file:
+    path: /tmp/initial_data.sql
+    state: absent

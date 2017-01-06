@@ -3,3 +3,4 @@
 
   roles:
     - { role: mysql-server, tags: ['mysql-server'] }
+    - { role: cnote-mysql-config, tags: ['cnote-mysql-config'] }
