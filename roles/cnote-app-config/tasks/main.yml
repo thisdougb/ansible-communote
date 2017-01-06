@@ -1,0 +1,38 @@
+---
+# tasks file for communote-db
+
+# SET DYNAMIC VARS
+- name: generate random string
+  shell: </dev/urandom tr -dc '1234567890qwertyuiopQWERTYUIOPasdfghjklASDFGHJKLzxcvbnmZXCVBNM' | head -c20; echo
+  register: rand_pw_string
+  delegate_to: localhost
+
+- set_fact:
+    cnote_db_password: "{{ rand_pw_string.stdout }}"
+
+- set_fact:
+    cnote_db_user: "{{ inventory_hostname }}"
+
+- name: create core.properties (db credentials)
+  template:
+    src: core.properties.j2
+    dest: "{{ communote_data_dir }}/core.properties"
+    owner: communote
+    group: communote
+
+- name: retrieve mysql root pw from HashiCorp Vault
+  uri:
+    url: "http://{{ groups.vault[0] }}:8200/v1/secret/{{ groups.backend[0] }}"
+    method: GET
+    HEADER_X-Vault-Token: "{{ hashivault_root_token }}"
+    return_content: yes
+    status_code: 200
+  register: vault_content
+  delegate_to: localhost
+
+- name: create a cnote database user for this node
+  command: "mysql -u root -p{{ vault_content.json.data.mysqlrootpw }} -e \"GRANT ALL PRIVILEGES ON {{ cnote_db_database }}.* TO '{{ cnote_db_user }}'@'{{ ansible_all_ipv4_addresses[1] }}' IDENTIFIED BY '{{ cnote_db_password }}';\""
+  delegate_to: "{{ groups.backend[0] }}"
+
+- debug:
+    msg: "mysql -u root -p{{ vault_content.json.data.mysqlrootpw }} -e \"GRANT ALL PRIVILEGES ON {{ cnote_db_database }}.* TO '{{ cnote_db_user }}'@'{{ ansible_all_ipv4_addresses[1] }}' IDENTIFIED BY '{{ cnote_db_password }}';\""

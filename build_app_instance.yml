@@ -1,0 +1,9 @@
+---
+- hosts: frontend
+
+  roles:
+    - { role: mysql-client, tags: ['mysql-client'] }
+    - { role: jdk8, tags: ['jdk8'] }
+    - { role: tomcat, tags: ['tomcat'] }
+    - { role: communote, tags: ['communote'] }
+    - { role: cnote-app-config, tags: ['cnote-app-config'] }

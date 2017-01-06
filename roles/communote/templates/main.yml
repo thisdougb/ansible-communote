@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS {{ communote_db_name }} CHARACTER SET utf8 COLLATE utf8_general_ci;
+GRANT ALL PRIVILEGES ON {{ communote_db_name }}.* TO '{{ communote_db_user }}'@'127.0.0.1' IDENTIFIED BY '{{ communote_db_password }}';

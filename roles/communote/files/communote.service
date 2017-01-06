@@ -1,0 +1,12 @@
+[Unit]
+Description=Communote
+
+[Service]
+User=communote
+Group=communote
+TimeoutStartSec=0
+ExecStart=/opt/communote/bin/startup.sh
+ExecStop=/opt/communote/bin/shutdown.sh
+
+[Install]
+WantedBy=multi-user.target

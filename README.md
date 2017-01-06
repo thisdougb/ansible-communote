@@ -63,3 +63,15 @@ mysqlrootpw     	hFtzvVswuVoJDoBCllQ2
 ```
 
 Using the cnote-mysql-config role some base data is installed into the communote database.    This is the table and meta data setup required before we build the front end application nodes.
+
+
+
+## Files not in this repo
+
+```
+./roles/communote/files/Communote-3.4.1.5766-linux.tar
+./roles/communote/files/mysql-connector-java-5.1.40-bin.jar
+./roles/communote/files/mysql57-community-release-el7-9.noarch.rpm
+./roles/mysql-client/files/mysql57-community-release-el7-9.noarch.rpm
+./roles/mysql-server/files/mysql57-community-release-el7-9.noarch.rpm
+```

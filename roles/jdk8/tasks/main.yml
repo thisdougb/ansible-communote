@@ -1,0 +1,11 @@
+---
+- name: copy jdk
+  copy:
+    src: jdk-8u111-linux-x64.rpm
+    dest: /tmp/
+    force: no
+
+- name: install jdk
+  yum:
+    name: /tmp/jdk-8u111-linux-x64.rpm
+    state: present

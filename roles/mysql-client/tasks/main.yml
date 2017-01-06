@@ -1,0 +1,17 @@
+---
+- name: copy mysql repo rpm to host
+  copy:
+    src: mysql57-community-release-el7-9.noarch.rpm
+    dest: /tmp/mysql57-community-release-el7-9.noarch.rpm
+    force: no
+
+- name: install mysql repo rpm
+  yum:
+    name: /tmp/mysql57-community-release-el7-9.noarch.rpm
+    state: present
+
+- name: install mysql rpms
+  yum:
+    name: mysql-community-client
+    state: present
+  register: mysqlrpminstall

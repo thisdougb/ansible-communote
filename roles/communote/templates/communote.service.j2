@@ -1,0 +1,11 @@
+[Unit]
+Description=Communote Messenger Service
+
+[Service]
+User=communote
+Group=communote
+TimeoutStartSec=0
+ExecStart=/usr/local/bin/{{ service_name }} {{ service_start_params }}
+
+[Install]
+WantedBy=multi-user.target

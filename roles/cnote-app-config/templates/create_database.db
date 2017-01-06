@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS {{ cnote_db_database }} CHARACTER SET utf8 COLLATE utf8_general_ci;
+GRANT ALL PRIVILEGES ON {{ cnote_db_database }}.* TO '{{ cnote_db_user }}'@'{{ ansible_all_ipv4_addresses[1] }}' IDENTIFIED BY '{{ cnote_db_password }}';

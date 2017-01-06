@@ -1,0 +1,81 @@
+---
+# tasks file for communote-db
+
+- name: create communote group
+  group:
+    name: communote
+    state: present
+
+- name: create communote user
+  user:
+    name: communote
+    group: communote
+    shell: /bin/bash
+    state: present
+
+- name: check for communote instance
+  stat:
+    path: "{{ communote_install_dir }}"
+  register: cnote_instance
+
+- name: create communote dir
+  file:
+    path: "{{ communote_install_dir }}"
+    owner: communote
+    group: communote
+    state: directory
+  when: cnote_instance.stat.exists == False
+
+- name: get communote archive
+  unarchive:
+    src: Communote-3.4.1.5766-linux.tar
+    dest: /tmp/
+    owner: communote
+    group: communote
+  when: cnote_instance.stat.exists == False
+
+- name: install communote
+  shell: "mv -u /tmp/Communote-3.4.1.5766/communote/* {{ communote_install_dir }}"
+  when: cnote_instance.stat.exists == False
+
+- name: set communote dir perms
+  file:
+    owner: communote
+    group: communote
+    path: "{{ communote_install_dir }}"
+  when: cnote_instance.stat.exists == False
+
+- name: rm communote archive
+  file: 
+    path: /tmp/Communote-3.4.1.5766
+    state: absent
+  when: cnote_instance.stat.exists == False
+
+- name: get mysqlj driver
+  copy:
+    src: mysql-connector-java-5.1.40-bin.jar
+    dest: "{{ communote_install_dir }}/lib/"
+    owner: communote
+    group: communote
+    force: no
+
+- name: define communote config directory
+  lineinfile:
+    line: "'<Environment name=\"communote.config.dir\" type=\"java.lang.String\" value=\"{{ communote_conf_dir }}\" />'"
+    state: present
+    dest: "{{ communote_conf_dir }}/context.xml"
+    insertbefore: '</Context>'
+
+- name: create communote-data dir
+  file:
+    path: "{{ communote_data_dir }}"
+    owner: communote
+    group: communote
+    state: directory
+
+- name: create startup.properties
+  template:
+    src: startup.properties.j2
+    dest: "{{ communote_conf_dir }}/startup.properties"
+    owner: communote
+    group: communote
