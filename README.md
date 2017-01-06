@@ -44,3 +44,16 @@ Cluster ID: e62f290c-02e1-ac0a-5995-60d6bf5ce88c
 
 High-Availability Enabled: false
 ```
+
+## build_db_instance.yml
+
+Builds the backend database instance with mysql.   Of note is that it initialises the database with a root passwords, and then stores that password in the HashiCorp Vault.   This means no human actually sets/sees the root password, but Ansible has access to it (as we see later) via the vault.
+
+Checking the vault (in this demo env), we can see the password has been stored:
+```
+[root@vault ~]# vault read secret/dbnode
+Key             	Value
+---             	-----
+refresh_interval	768h0m0s
+mysqlrootpw     	hFtzvVswuVoJDoBCllQ2
+```
