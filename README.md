@@ -4,6 +4,7 @@ Ansible playbooks briefly described, and in the order they should be run in if y
 
 1. Build a HashiCorp Vault, auto init and unsealing.
 2. Build a MySQL instance, auto generating a root password and storing it in the vault.
+3. Install base data to communote database backend
 
 ## init_ansible_setup.yml
 
@@ -60,3 +61,5 @@ Key             	Value
 refresh_interval	768h0m0s
 mysqlrootpw     	hFtzvVswuVoJDoBCllQ2
 ```
+
+Using the cnote-mysql-config role some base data is installed into the communote database.    This is the table and meta data setup required before we build the front end application nodes.
