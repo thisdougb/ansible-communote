@@ -1,11 +1,13 @@
 # ansible-communote
 
+This high level playbooks briefly described, and in the order they should be run in if you want to try this out.
+
 ## init_ansible_setup.yml
 
 This is a simple playbook to setup the ansible ssh key on hosts, to avoid the need to type passwords.   Use after building new instances.
 
 ```
-$ ansible-playbook -k -K init_ansible_setup.yml --limit vault
+$(ansible-host) ansible-playbook -k -K init_ansible_setup.yml --limit vault
 SSH password: 
 SUDO password[defaults to SSH password]: 
 ```
@@ -16,17 +18,17 @@ This playbook will build, init and unseal an instance of HashiCorp Vault.   It w
 
 The gist, showing the steps and finally logging into the vault instance proving the status is unsealed and ready to use:
 ```
-$ ansible-playbook build_vault_instance.yml
+$(ansible-host) ansible-playbook build_vault_instance.yml
 
-$ cat roles/.hashicorp_vault_keys.json 
+$(ansible-host) cat roles/.hashicorp_vault_keys.json 
 {"keys": ["1804799548be7594b78f1f76a558bbf3588f2caa2114e98235aa57333a93c3a701", "eeb8f226827b73ea9307974392fef3c23b2b40ba59cb8d1c5ec4212f8316511902"],
  "keys_base64": ["GAR5lUi+dZS3jx92pVi781iPLKohFOmCNapXMzqTw6cB", "7rjyJoJ7c+qTB5dDkv7zwjsrQLpZy40cXsQhL4MWURkC"], "root_token": "97a9e11e-49fc-1434-dafe-9be0eccce519"}
 
-$ mkdir -p group_vars/all
-$ ansible-vault create group_vars/all/hashicorp_token.yml
+$(ansible-host) mkdir -p group_vars/all
+$(ansible-host) ansible-vault create group_vars/all/hashicorp_token.yml
 root_token: "97a9e11e-49fc-1434-dafe-9be0eccce519"
 
-# vagrant ssh vault
+$(ansible-host) vagrant ssh vault
 Last login: Fri Jan  6 14:12:15 2017 from 172.28.128.4
 [vagrant@vault ~]$ su -
 Password: 
